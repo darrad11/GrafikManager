@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Raport Zmianowy - {{ employee.name }} {{ employee.surname }}{% endblock %}
+
+{% block body %}
+    <h1>Raport dla pracownika: {{ employee.name }} {{ employee.surname }}</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Imię i nazwisko</th>
+            <th>Ostatni raport</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ employee.name }} {{ employee.surname }}</td>
+            <td>
+                {% if lastReport %}
+                    <a href="{{ path('employee_report', {'id': employee.id}) }}?pdf=true">
+                        Raport z {{ lastReport.createdAt|date('d-m-Y') }}
+                    </a>
+                {% else %}
+                    Brak raportów
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('report_employee_report', {'id': employee.id}) }}?pdf=true" class="btn btn-primary">Pobierz PDF</a>
+{% endblock %}

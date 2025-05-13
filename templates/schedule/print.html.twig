@@ -1,0 +1,59 @@
+{% block title %}Grafik Tygodniowy{% endblock %}
+
+{% block body %}
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+        thead {
+            background-color: #f2f2f2;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+
+    <h3>Grafik nr {{ week }}, rok {{ year }}</h3>
+
+    <table>
+        {% set days = ['Pon', 'Wt', 'Sr', 'Czw', 'Pt', 'Sob', 'Nd'] %}
+        <thead>
+        <tr>
+            <th></th>
+            {% for day in days %}
+                <th>{{ day }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>Zatrudniony/a</th>
+            {% for date in dates %}
+                <th>{{ date|date('d.m') }}</th>
+            {% endfor %}
+        </tr>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.name }} {{ employee.surname }}</td>
+                {% for date in dates %}
+                    <td>
+                        {% set formattedDate = date.format('Y-m-d') %}
+                        {{ schedule[employee.id][formattedDate] | default('—') }}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if not isPdf %}
+        <a href="{{ path('report_week', {'week': week}) ~ '?pdf=true' }}" target="_blank" class="print-btn">Pobierz PDF</a>
+    {% endif %}
+{% endblock %}

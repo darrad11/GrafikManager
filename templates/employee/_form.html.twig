@@ -1,0 +1,34 @@
+{{ form_start(form) }}
+<div class="form-group">
+    {{ form_label(form.name, 'Imię / imiona') }}
+    {{ form_widget(form.name, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.name) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.surname, 'Nazwisko') }}
+    {{ form_widget(form.surname, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.surname) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.contractType, 'Rodzaj umowy') }}
+    {{ form_widget(form.contractType, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.contractType) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.monthlyHours, 'Przewidywana liczba godzin miesięcznie') }}
+    {{ form_widget(form.monthlyHours, { 'attr': { 'class': 'form-control' } }) }}
+    {{ form_errors(form.monthlyHours) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.active, 'Czy aktywny?') }}
+    {{ form_widget(form.active, { 'attr': { 'class': 'form-check-input' } }) }}
+    {{ form_errors(form.active) }}
+</div>
+
+<a href="{{ path('employee_index') }}" class="btn btn-secondary">Anuluj</a>
+<button type="submit" class="btn btn-primary">Zapisz</button>
+{{ form_end(form) }}

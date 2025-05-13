@@ -1,0 +1,60 @@
+{#
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ importmap() }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>
+#}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Grafik Manager</title>
+        <link rel="stylesheet" href="/css/style.css">
+        <script>
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('hidden');
+            }
+        </script>
+    </head>
+    <body>
+        <header class="navbar">
+            <button class="hamburger" onclick="toggleSidebar()">☰</button>
+            <nav class="top-nav">
+                <a href="{{ path('schedule_home') }}" class="nav-btn">Grafik tygodniowy</a>
+                <a href="{{ path('employee_index') }}" class="nav-btn">Lista zatrudnionych</a>
+                <a href="{{ path('employee_new') }}" class="nav-btn">Dodaj pracownika</a>
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_logout') }}" class="nav-btn logout-btn">Wyloguj</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="nav-btn login-btn">Zaloguj</a>
+                {% endif %}
+            </nav>
+        </header>
+        <aside id="sidebar" class="sidebar hidden">
+            <a href="{{ path('schedule_home') }}">Grafik tygodniowy</a>
+            <a href="{{ path('report_week', {'week': date().format('W')}) }}">Drukuj aktualny grafik</a>
+            <a href="{{ path('employee_index') }}">Lista zatrudnionych</a>
+            <a href="{{ path('employee_new') }}">Dodaj pracownika</a>
+            <a href="#">Edytuj dane pracownika</a>
+            <a href="#">Archiwum</a>
+            <a href="{{ path('app_logout') }}" class="logout-btn">Wyloguj</a>
+        </aside>
+        {% block body %}{% endblock %}
+    </body>
+</html>

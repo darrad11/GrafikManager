@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista zatrudnionych{% endblock %}
+
+{% block body %}
+    <h1>Lista zatrudnionych</h1>
+    <a href="{{ path('employee_new') }}" style="display: block; margin: 20px;"><button>➕ Dodaj zatrudnionego</button></a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Imię i nazwisko</th>
+            <th>Rodzaj umowy</th>
+            <th>Aktywny</th>
+            <th>Akcje</th>
+            <th>Ostatni raport</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee.name }} {{ employee.surname }}</td>
+                <td>{{ employee.contractType }}</td>
+                <td>{{ employee.active ? '✅' : '❌' }}</td>
+                <td>
+                    <a href="{{ path('report_employee_report', {'id': employee.id}) }}"><button>Drukuj raport godzinowy</button></a>
+                    <a href="{{ path('employee_edit', {'id': employee.id}) }}"><button>Edytuj dane</button></a>
+                    <form method="post"
+                          action="{{ path('employee_delete', {'id': employee.id}) }}"
+                          onsubmit="return confirm('Na pewno usunąć tę osobę?');"
+                          style="display: contents;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employee.id) }}">
+                        <button class="btn-secondary" type="submit">Usuń osobę</button>
+                    </form>
+                <td>
+                    {# {% set lastReport = reports[employee.id] ?? null %}
+                    {% if lastReport %}
+                        <a href="{{ path('employee_report', {'id': employee.id}) }}?pdf=true">
+                            Raport z {{ lastReport.createdAt|date('d-m-Y') }}
+                        </a>
+                    {% else %} #}
+                        Brak raportów
+                </td>
+
+            </tr>
+        {% else %}
+            <tr><td colspan="4">Brak zatrudnionych</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
